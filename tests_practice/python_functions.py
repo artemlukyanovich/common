@@ -1,4 +1,5 @@
 import math
+import string
 
 def fun1(a: list, b: list):
     """Take two lists, say for example these two:
@@ -42,4 +43,51 @@ def fun6(l: list):
             return False
     else:
         return True
+
+def fun7(l: list):
+    """Write a Python program to find the number in a
+    list that doesn't occur twice."""
+    nums = []
+    for i in l:
+        if l.count(i) == 1:
+            nums.append(i)
+    return nums
+
+def fun8(l: list):
+    """Write a Python program to find a missing number from a list."""
+    nums = []
+    for i in range(l[0], l[len(l)-1]):
+        if i not in l:
+            nums.append(i)
+    return nums
+
+def fun9(l: list):
+    """Write a Python program to count the elements
+    in a list until an element is a tuple."""
+    n = 0
+    for i in l:
+        if type(i) == tuple:
+            break
+        n += 1
+    return n
+
+def fun10(s: str):
+    """Write a program that will take the str parameter being
+    passed and return the string in reversed order."""
+    return s[::-1]
+
+def fun11(n: int):
+    """Write a program that will take the num parameter being
+    passed and return the number of hours and minutes the parameter
+    converts to (ie. if num = 63 then the output should be 1:3).
+    Separate the number of hours and minutes with a colon."""
+    return str(n//60) + ":" + str(n%60)
+
+def fun12(s: str):
+    """Write a program that will take the parameter being passed and
+    return the largest word in the string. If there are two or more words
+    that are the same length, return the first word from the string with
+    that length. Ignore punctuation"""
+    s2 = "".join(l for l in s if l not in string.punctuation)
+    return max(s2.split(), key=len)
 
