@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from python_functions import fun1, fun2, fun3, fun4, fun5, fun6, \
     fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, \
-    fun16, fun17, fun18
+    fun16, fun17, fun18, fun19, fun20
 
 class Tests(unittest.TestCase):
     def test_fun1(self):
@@ -33,7 +33,7 @@ class Tests(unittest.TestCase):
     def test_fun8(self):
         self.assertEqual(fun8([1,2,3,4,6,7,8,10]), [5, 9])
 
-    def test_funt9(self):
+    def test_fun9(self):
         self.assertEqual(fun9([1,2,3,4,(1,2),3,(1,2)]), 4)
 
     def test_fun10(self):
@@ -66,3 +66,10 @@ class Tests(unittest.TestCase):
     def test_fun18(self):
         self.assertEqual(fun18("abcdefghz"), "bcdEfghIA")
 
+    def test_fun19(self):
+        self.assertEqual(fun19("edcba"), "abcde")
+
+    def test_fun20(self):
+        self.assertEqual(fun20(3, 2), True)
+        self.assertEqual(fun20(2, 3), False)
+        self.assertEqual(fun20(2, 2), "-1")

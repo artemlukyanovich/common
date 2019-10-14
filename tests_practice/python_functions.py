@@ -156,10 +156,24 @@ def fun18(s: str):
     (ie. cbecomes d, zbecomes a). Then capitalize every vowel in this
     new string (a, e, i, o, u) and finally return this modified string."""
     vowels = ["a", "e", "i", "o", "u"]
-    s2 = [string.ascii_lowercase[str(string.ascii_lowercase).index(x)+1] if x != "z" else "a" for x in s]
+    s2 = [string.ascii_lowercase[str(string.ascii_lowercase).index(x) + 1] if x != "z" else "a" for x in s]
     res = "".join([x.upper() if x in vowels else x for x in s2])
     return res
 
-print(fun18("abcdefghz"))
 
-# print("".join(x if x != "c" else "C" for x in ["a", "b", "c"] ))
+def fun19(s: str):
+    """Write a program that will take the str string parameter being
+    passed and return the string with the letters in alphabetical order
+    (ie. hello becomes ehllo). Assume numbers and punctuation symbols
+    will not be included in the string."""
+    return "".join(sorted(s))
+
+
+def fun20(a, b):
+    """Write a program that will take both parameters being passed and
+    return the true if num2 is greater than num1, otherwise return the false.
+    If the parameter values are equal to each other then return the string -1"""
+    if a == b:
+        return "-1"
+    else:
+        return a > b
