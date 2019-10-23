@@ -1,5 +1,6 @@
 import math
 
+
 class Cat:
     """
     Write Class Cat which will receive age from user
@@ -278,14 +279,6 @@ class House:
         else:
             raise ValueError("Value must be not 0")
 
-    # def create_roof(self, width, height, roof_type):
-    #     if width == 0 or height == 0:
-    #         raise ValueError("Value must be not 0")
-    #     else:
-    #         if self.__roof is None:
-    #             self.__roof = Roof(width, height, roof_type)
-    #         else:
-    #             raise ValueError("The house can not have two roofs")
 
     def create_roof(self, width, height, roof_type):
         if width != 0 and height != 0:
@@ -302,14 +295,6 @@ class House:
         else:
             raise ValueError("Value must be not 0")
 
-    # def create_door(self, width, height):
-    #     if width == 0 or height == 0:
-    #         raise ValueError("Value must be not 0")
-    #     else:
-    #         if self.__door is None:
-    #             self.__door = Door(width, height)
-    #         else:
-    #             raise ValueError("The house can not have two doors")
 
     def create_door(self, width, height):
         if width != 0 and height != 0:
