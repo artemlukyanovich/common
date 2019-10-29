@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block main_info %}
+    <ul>
+        {% for i in vg_list %}
+            {% if i == "beetroot" %}
+                <li>{{i|upper}}</li>
+            {% else %}
+                <li>{{i}}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}
+
