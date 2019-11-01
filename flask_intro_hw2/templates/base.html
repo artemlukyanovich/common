@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>
     {% block page_title %}
-    Base
+    {{title}}
     {% endblock %}
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -26,6 +26,20 @@
     .j {
         text-align: justify;
         padding: 0 15px;
+    }
+    .author_title {
+        text-align: center;
+        font-size: 80px;
+        font-family: Chilanka;
+        padding: 20px 20px;
+    }
+    .author_text {
+        text-align: center;
+        font-size: 30px;
+    }
+    footer {
+        position: center;
+        bottom: 0;
     }
 </style>
 </head>
@@ -64,20 +78,13 @@
         <h3 class="text_center">{{ title }}</h3>
         <p class="j">
             {{ text }}<br><br>
-            The text contains {{ count }} words
+            This text contains {{ count }} words
         </p>
     </div>
 {% endblock %}
 
 <!-- Footer -->
-<footer class="page-footer font-small teal pt-4">
-
-  <!-- Footer Text -->
-  <div class="container-fluid text-center text-md-left">
-
-  </div>
-  <!-- Footer Text -->
-  <div class="footer-copyright text-center py-3">
+  <div class="page-footer text-center py-3">
     <a href="/author"> See the author</a>
   </div>
   <!-- Copyright -->
@@ -85,9 +92,6 @@
     <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
   </div>
   <!-- Copyright -->
-
-</footer>
 <!-- Footer -->
-
 </body>
 </html>

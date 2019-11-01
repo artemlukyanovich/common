@@ -1,29 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Author</title>
-    <style>
-        .author_title {
-            text-align: center;
-            font-size: 80px;
-            font-family: Chilanka;
-            padding: 20px 20px;
-        }
-        .author_text {
-            text-align: center;
-            font-size: 30px;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block page_title %}
+    Author
+{% endblock %}
+
+{% block main_info %}
     <header class="author_title">Artem Lukyanovich</header>
     <div class="author_text">
         <a href="https://github.com/artemlukyanovich/">My GitHub</a><br><br>
         I did it with little looking to the previous homework and my notes :)
     </div>
+{% endblock %}
 
 {% block additional_info %}
 {% endblock %}
-</body>
-</html>
