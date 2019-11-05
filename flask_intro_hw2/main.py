@@ -44,6 +44,7 @@ def get_ipod_page():
     return render_template("ipod.html", title=get_data()[2]['title'], text=get_data()[2]['text'],
                            count=len(get_data()[2]['text'].split()))
 
+
 @app.route('/author')
 def get_author_page():
     return render_template("author.html")
