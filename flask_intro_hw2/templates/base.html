@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+    {% block page_title %}
+    {{title}}
+    {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<style>
+    #images {
+        text-align: center;
+    }
+
+    *:focus {
+        outline: 0;
+    }
+    .text_center {
+        text-align: center;
+    }
+    .j {
+        text-align: justify;
+        padding: 0 15px;
+    }
+    .author_title {
+        text-align: center;
+        font-size: 80px;
+        font-family: Chilanka;
+        padding: 20px 20px;
+    }
+    .author_text {
+        text-align: center;
+        font-size: 30px;
+    }
+    footer {
+        position: center;
+        bottom: 0;
+    }
+</style>
+</head>
+<body>
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-light primary-color">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="/">Home</a>
+
+  <!-- Collapse button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+    aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <!-- Collapsible content -->
+  <div class="collapse navbar-collapse justify-content-end" id="basicExampleNav">
+
+    <form class="form-inline">
+      <div class="md-form my-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      </div>
+    </form>
+  </div>
+  <!-- Collapsible content -->
+
+</nav>
+<!--/.Navbar-->
+
+{% block main_info %}
+{% endblock %}
+
+{% block additional_info %}
+    <div>
+        <h3 class="text_center">{{ title }}</h3>
+        <p class="j">
+            {{ text }}<br><br>
+            This text contains {{ count }} words
+        </p>
+    </div>
+{% endblock %}
+
+<!-- Footer -->
+  <div class="page-footer text-center py-3">
+    <a href="{{url_for('get_author_page')}}"> See the author</a>
+  </div>
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2018 Copyright:
+    <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+<!-- Footer -->
+</body>
+</html>
