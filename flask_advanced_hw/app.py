@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template
 
 from infrastructure import DB
@@ -19,8 +21,6 @@ def create_app():
 
 
 app = create_app()
-
-# app.register_blueprint(products)
 
 
 @app.route('/')
