@@ -16,6 +16,7 @@ def create_app():
     # setup_db()
     app = Flask(__name__, instance_relative_config=False)
     with app.app_context():
+        app.config['SECRET_KEY'] = os.urandom(15).hex()
         app.register_blueprint(products)
         return app
 

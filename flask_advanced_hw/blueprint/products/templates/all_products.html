@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>All Products</title>
-</head>
-<body>
-<a href="/home">Home</a>
-</body>
-</html>
+<div class="col-12">
+    {% if args %}
+        <h1>Products: {{ args['name'] }} {{ args['val'] }}</h1>
+    {% else %}
+        <h1>All products</h1>
+    {% endif %}
+</div>
+{% for product in products %}
+<div>
+    <img src="{{ url_for('static', filename=product.img_name ) }}" class="card-img-top" alt="{{ product.name }}">
+    <div class="card-body">
+        <h2 class="card-title"><a href="{{ url_for('products.get_product', id=product.id ) }}">{{ product.name }}</a></h2>
+        <p>Price: {{ product.price }}</p>
+    </div>
+</div>
+{% endfor %}
