@@ -19,7 +19,7 @@ class ProductForm(Form):
 
 
 @products.route('/add_product', methods=["POST", "GET"])
-def add_product_save():
+def add_product():
     form = ProductForm(request.form)
     if form.validate and request.method == "POST":
         image = request.files['image']

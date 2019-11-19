@@ -1,16 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Product{% endblock %}
+{% block main_info %}
 <div class="col-12">
     {% if args %}
-        <h1>Products: {{ args['name'] }} {{ args['val'] }}</h1>
+        <h2>Products: {{ args['name'] }} {{ args['val'] }}</h2>
     {% else %}
-        <h1>All products</h1>
+        <h2>All products</h2>
     {% endif %}
 </div>
 {% for product in products %}
 <div>
-    <img src="{{ url_for('static', filename=product.img_name ) }}" class="card-img-top" alt="{{ product.name }}">
+    <img src="{{ url_for('static', filename=product.img_name ) }}" alt="{{ product.name }}">
     <div class="card-body">
-        <h2 class="card-title"><a href="{{ url_for('products.get_product', id=product.id ) }}">{{ product.name }}</a></h2>
+        <h4 class="card-title"><a href="{{ url_for('products.get_product', id=product.id ) }}">{{ product.name }}</a></h4>
         <p>Price: {{ product.price }}</p>
     </div>
 </div>
 {% endfor %}
+</br>
+<div>
+    <h3 class="card-title"><a href="{{ url_for('products.add_product') }}">Add product</a></h3>
+</div>
+{% endblock %}

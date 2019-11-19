@@ -1,11 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
-</head>
-<body>
-<a href="/product">Products</a><br>
-<a href="/supermarket">Supermarkets</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block home_page %}{% endblock %}
+
+{% block main_info %}
+    <div class="card-body">
+        <h3><a href="{{url_for('products.get_all_products')}}">Products</a></h3>
+        <h3><a href="/supermarket">Supermarkets</a></h3>
+    </div>
+{% endblock %}

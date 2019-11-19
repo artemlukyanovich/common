@@ -1,11 +1,16 @@
+{% extends 'base.html' %}
 
+{% block title %}Product{% endblock %}
+
+{% block main_info %}
 <div>
-    <h1>Product: {{ product.name }}</h1>
+    <h2>Product: {{ product.name }}</h2>
 </div>
 <div>
-    <img src="{{ url_for('static', filename=product.img_name ) }}" class="card-img-top" alt="{{ product.name }}">
+    <img src="{{ url_for('static', filename=product.img_name ) }}" alt="{{ product.name }}">
     <div>
         <p>Price: {{ product.price }}</p>
         <p>{{ product.description }}</p>
     </div>
 </div>
+{% endblock %}

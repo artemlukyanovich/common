@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Add product{% endblock %}
+
+{% block main_info %}
 <form action="" method="post" name="main" enctype="multipart/form-data" style="margin-left :25px;">
     <p> Name: {{form.name}}</p>
     <p> Description: {{form.description}}</p>
@@ -12,5 +10,4 @@
     <p> Image source: {{form.image}}</p>
     <input type="submit" value="Add product">
 </form>
-</body>
-</html>
+{% endblock %}
