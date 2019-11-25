@@ -24,7 +24,7 @@ def add_product():
     if form.validate and request.method == "POST":
         image = request.files['image']
         img_name = secure_filename(image.filename)
-        path = os.path.join('static', img_name)
+        path = os.path.join('static/products', img_name)
         image.save(path)
         data = {"id": str(uuid.uuid4()), "name": form.name.data, "description": form.description.data,
                 "img_name": img_name, "price": form.price.data}
@@ -35,16 +35,13 @@ def add_product():
 
 @products.route('/product', methods=["GET"])
 def get_all_products():
-    # data_products = DB['products']
-    # result = []
     args = {}
+    result = DB['products']
     if request.args:
-        for param in request.args:
-            args['name'] = param
-            args['val'] = request.args.get(param)
-            result = [i for i in DB['products'] if str(i[param]) == str(request.args.get(param))]
-    else:
-        result = DB['products']
+        for p in request.args:
+            args['name'] = p
+            args['val'] = request.args.get(p)
+            result = [i for i in DB['products'] if str(i[p]) == str(request.args.get(p))]
     return render_template("all_products.html", products=result, args=args)
 
 

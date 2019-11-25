@@ -2,14 +2,14 @@ import os
 
 from flask import Flask, render_template
 
-from infrastructure import DB
+from blueprint.supermarkets.main import supermarkets
 from blueprint.products.main import products
 
 # app = Flask(__name__)
 
 
 # def setup_db():
-#     DB["products"] = []
+# DB["products"] = []
 
 
 def create_app():
@@ -18,10 +18,16 @@ def create_app():
     with app.app_context():
         app.config['SECRET_KEY'] = os.urandom(15).hex()
         app.register_blueprint(products)
+        app.register_blueprint(supermarkets)
         return app
 
 
 app = create_app()
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 
 @app.route('/')

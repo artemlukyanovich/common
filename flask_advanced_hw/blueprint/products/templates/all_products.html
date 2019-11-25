@@ -1,25 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}Products{% endblock %}
 {% block main_info %}
 <div class="col-12">
-    {% if args %}
+    {% if request.args %}
         <h2>Products: {{ args['name'] }} {{ args['val'] }}</h2>
     {% else %}
         <h2>All products</h2>
     {% endif %}
 </div>
 {% for product in products %}
-<div>
-    <img src="{{ url_for('static', filename=product.img_name ) }}" alt="{{ product.name }}">
-    <div class="card-body">
+<div class="card-body">
+    <img src="{{ url_for('static', filename='products/'+product.img_name ) }}" alt="{{ product.name }}">
+    <div>
         <h4 class="card-title"><a href="{{ url_for('products.get_product', id=product.id ) }}">{{ product.name }}</a></h4>
         <p>Price: {{ product.price }}</p>
     </div>
 </div>
 {% endfor %}
-</br>
-<div>
+<div class="card-body">
     <h3 class="card-title"><a href="{{ url_for('products.add_product') }}">Add product</a></h3>
 </div>
 {% endblock %}

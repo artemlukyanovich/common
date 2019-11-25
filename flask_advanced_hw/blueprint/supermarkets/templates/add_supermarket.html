@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Add product{% endblock %}
+{% block title %}Add supermarket{% endblock %}
 
 {% block style %}
 {% endblock %}
@@ -8,9 +8,8 @@
 {% block main_info %}
 <form action="" method="post" name="main" enctype="multipart/form-data" style="margin-left :25px;">
     <p> Name: {{form.name}}</p>
-    <p> Description: {{form.description}}</p>
-    <p> Price: {{form.price}}</p>
+    <p> Location: {{form.location}}</p>
     <p> Image: {{form.image}}</p>
-    <input type="submit" value="Add product">
+    <input type="submit" value="Add supermarket">
 </form>
 {% endblock %}
