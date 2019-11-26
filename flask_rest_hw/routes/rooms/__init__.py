@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask_restful import Api
-from rooms.resource import Rooms
+from routes.rooms.resource import Rooms
 
 api_bp = Blueprint('rooms', __name__)
 api = Api(api_bp)
 
-api.add_resource(Rooms, '/rooms')
+api.add_resource(Rooms, '/rooms', '/rooms/<value>')
 
