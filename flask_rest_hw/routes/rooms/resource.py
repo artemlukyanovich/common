@@ -13,7 +13,7 @@ class Room:
 
 rooms_list = list()
 rooms_list.append(Room(21, "Lux", "Not available", 200))
-rooms_list.append(Room(32, "Standard", "Available", 100))
+rooms_list.append(Room(32, "Standard", "Not available", 100))
 rooms_list.append(Room(33, "Standard", "Available", 100))
 
 room_structure = {
@@ -23,23 +23,24 @@ room_structure = {
     "price": fields.Integer
 }
 
+status_list = ["Available", "Not available"]
+
 parser = reqparse.RequestParser()
 parser.add_argument("status", type=str, help="Please enter the correct status!")
 
 
 class Rooms(Resource):
     def get(self, value=None):
-        @marshal_with(room_structure)  # "marshal" makes messages below incorrect, so I added one more func to fix it
+        @marshal_with(room_structure)  # show() function to make messages correct
         def show(x):
             return x
         args = parser.parse_args()
         if args['status']:
             status = args['status'].replace("_", " ")
-            result = []
+            result = list()
             for room in rooms_list:
                 if room.status == status:
                     result.append(room)
-                    return show(room)
             return show(result)
         if value:
             try:
@@ -61,6 +62,8 @@ class Rooms(Resource):
             price = int(data.get('price'))
         except ValueError:
             return "Please enter the correct data!"
+        if status not in status_list:
+            return "Is Available or Not available?"
         for room in rooms_list:
             if room.number == number:
                 return "Oops! Such room already exists!"

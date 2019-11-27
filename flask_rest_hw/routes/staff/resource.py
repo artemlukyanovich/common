@@ -25,7 +25,7 @@ staff_structure = {
 
 class Staff(Resource):
     def get(self, value=None):
-        @marshal_with(staff_structure)  # "marshal" makes messages below incorrect, so I added one more func to fix it
+        @marshal_with(staff_structure)  # show() function to make messages correct
         def show(x):
             return x
         if value:

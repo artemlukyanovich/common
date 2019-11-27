@@ -41,7 +41,7 @@ sex_list = ['man', 'woman']
 
 class Tenants(Resource):
     def get(self, value=None):
-        @marshal_with(tenants_structure)  # "marshal" makes messages below incorrect, so I added one more func to fix it
+        @marshal_with(tenants_structure)  # show() function to make messages correct
         def show(x):
             return x
         if value:
@@ -84,6 +84,9 @@ class Tenants(Resource):
         else:
             return "Oops! There is no such room!"
         tenants_list.append(Tenant(name, passport_id, age, sex, city, street, room_number))
+        for room in rooms_list:
+            if room.number == room_number:
+                room.status = "Not available"
         return "Successfully added!"
 
     def patch(self, value=None):
@@ -105,8 +108,15 @@ class Tenants(Resource):
                 return "Please enter the correct data!"
             for ten in tenants_list:
                 if ten.passport_id == value:
+                    pr_room = ten.room_number
                     tenants_list.remove(ten)
+                    for room in rooms_list:
+                        if room.number == pr_room:
+                            room.status = "Available"
                     tenants_list.append(Tenant(name, passport_id, age, sex, city, street, room_number))
+                    for room in rooms_list:
+                        if room.number == room_number:
+                            room.status = "Not available"
                     return "Successfully updated!"
             return "There is no such tenant!"
         return "Please choose the tenant!"
@@ -119,7 +129,11 @@ class Tenants(Resource):
                 return "Please enter the correct data!"
             for ten in tenants_list:
                 if ten.passport_id == value:
+                    pr_room = ten.room_number
                     tenants_list.remove(ten)
+                    for room in rooms_list:
+                        if room.number == pr_room:
+                            room.status = "Available"
                     return "Successfully removed!"
             return "There is no such tenant!"
         return "Please choose the tenant!"
