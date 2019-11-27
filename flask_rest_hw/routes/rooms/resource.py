@@ -50,7 +50,7 @@ class Rooms(Resource):
             for room in rooms_list:
                 if room.number == value:
                     return show(room)
-            return "There is no such room!"
+            return "Oops! There is no such room!"
         return show(rooms_list)
 
     def post(self):
@@ -63,7 +63,7 @@ class Rooms(Resource):
         except ValueError:
             return "Please enter the correct data!"
         if status not in status_list:
-            return "Is Available or Not available?"
+            return "Is it Available or Not available?"
         for room in rooms_list:
             if room.number == number:
                 return "Oops! Such room already exists!"
@@ -89,9 +89,8 @@ class Rooms(Resource):
                     rooms_list.remove(room)
                     rooms_list.append(Room(number, level, status, price))
                     return "Successfully updated!"
-            return "There is no such room!"
+            return "Oops! There is no such room!"
         return "Please choose the room!"
-
 
     def delete(self, value=None):
         if value:
@@ -103,7 +102,7 @@ class Rooms(Resource):
                 if room.number == value:
                     rooms_list.remove(room)
                     return "Successfully removed!"
-            return "There is no such room!"
+            return "Oops! There is no such room!"
         return "Please choose the room!"
 
 

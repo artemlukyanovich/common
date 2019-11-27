@@ -36,7 +36,7 @@ class Staff(Resource):
             for empl in staff_list:
                 if empl.passport_id == value:
                     return show(empl)
-            return "There is no such employee!"
+            return "Oops! There is no such employee!"
         return show(staff_list)
 
     # def post(self):
@@ -76,7 +76,7 @@ class Staff(Resource):
                     staff_list.remove(empl)
                     staff_list.append(Employee(name, passport_id, position, salary))
                     return "Successfully updated!"
-            return "There is no such employee!"
+            return "Oops! There is no such employee!"
         return "Please choose the employee!"
 
     def delete(self, value=None):
@@ -89,7 +89,7 @@ class Staff(Resource):
                 if empl.passport_id == value:
                     staff_list.remove(empl)
                     return "Successfully removed!"
-            return "There is no such employee!"
+            return "Oops! There is no such employee!"
         return "Please choose the employee!"
 
 

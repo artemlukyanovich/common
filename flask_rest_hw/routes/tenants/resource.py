@@ -52,7 +52,7 @@ class Tenants(Resource):
             for ten in tenants_list:
                 if ten.passport_id == value:
                     return show(ten)
-            return "There is no such tenant!"
+            return "Oops! There is no such tenant!"
         return show(tenants_list)
 
     # def post(self):
@@ -118,7 +118,7 @@ class Tenants(Resource):
                         if room.number == room_number:
                             room.status = "Not available"
                     return "Successfully updated!"
-            return "There is no such tenant!"
+            return "Oops! There is no such tenant!"
         return "Please choose the tenant!"
 
     def delete(self, value=None):
@@ -135,7 +135,7 @@ class Tenants(Resource):
                         if room.number == pr_room:
                             room.status = "Available"
                     return "Successfully removed!"
-            return "There is no such tenant!"
+            return "Oops! There is no such tenant!"
         return "Please choose the tenant!"
 
 
