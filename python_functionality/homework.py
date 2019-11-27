@@ -14,7 +14,10 @@ def task_1_fix_names_start_letter(data: DT) -> DT:
         fix_names_start_letters([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}])
         >>> [{'name': 'Alex', 'age': 26}, {'name': 'Denys', 'age': 89}]
     """
-    pass
+    for i in data:
+       if 'name' in i:
+           i['name'] = i['name'].title()
+    return data
 
 
 def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
@@ -25,7 +28,11 @@ def task_2_remove_dict_fields(data: DT, redundant_keys: List[str]) -> DT:
        remove_dict_field([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}], 'age')
         >>> [{'name': 'Alex'}, {'name': 'denys'}]
     """
-    pass
+    for i in data:
+        for j in redundant_keys:
+            if j in i:
+                del i[j]
+    return data
 
 
 def task_3_find_item_via_value(data: DT, value) -> DT:
@@ -35,21 +42,38 @@ def task_3_find_item_via_value(data: DT, value) -> DT:
         find_item_via_value([{'name': 'Alex', 'age': 26}, {'name': 'denys', 'age': 89}], 26)
         >>> [{'name': 'Alex', 'age': 26}]
     """
-    pass
+    result = []
+    for i in data:
+        if value in i.values():
+            result.append(i)
+    return result
 
 
 def task_4_min_value_integers(data: List[int]) -> int:
     """
     Find and return minimum value from list
     """
-    pass
+    result = []
+    for i in data:
+        if type(i) == int:
+            result.append(i)
+    if len(result) > 0:
+        return min(result)
+    else:
+        None
 
 
 def task_5_min_value_strings(data: List[Union[str, int]]) -> str:
     """
     Find the longest string
     """
-    pass
+    result = []
+    for i in data:
+        result.append(str(i))
+    if len(result) > 0:
+        return min(result, key = len)
+    else:
+        None
 
 
 def task_6_min_value_list_of_dicts(data: DT, key: str) -> ST:
@@ -58,21 +82,33 @@ def task_6_min_value_list_of_dicts(data: DT, key: str) -> ST:
     Returns:
 
     """
-    pass
+    result = data[0][key]
+    for i in data:
+        if key in i.keys():
+            if i[key] < result:
+                result = i[key] #why can't I type 'result = i' to return it then?
+    for i in data:
+        if result in i.values():
+            return i
 
 
 def task_7_max_value_list_of_lists(data: List[List[int]]) -> int:
     """
     Find max value from list of lists
     """
-    pass
+    result = data[0][0]
+    for i in data:
+        if len(i) > 0:
+            if max(i) > result:
+                result = max(i)
+    return result
 
 
 def task_8_sum_of_ints(data: List[int]) -> int:
     """
     Find sum of all items in given list
     """
-    pass
+    return sum(data)
 
 
 def task_9_sum_characters_positions(text: str) -> int:
@@ -88,7 +124,10 @@ def task_9_sum_characters_positions(text: str) -> int:
         >>> 532
 
     """
-    pass
+    result = 0
+    for i in text:
+        result += ord(i)
+    return result
 
 
 def task_10_generator_of_simple_numbers() -> Generator[int, None, None]:
@@ -102,4 +141,9 @@ def task_10_generator_of_simple_numbers() -> Generator[int, None, None]:
         next(a)
         >>> 3
     """
-    pass
+    for n in range(2, 200+1):
+        for i in range(2, n+1):
+            if i < n and n % i == 0:
+                break
+            elif i == n:
+                yield n
