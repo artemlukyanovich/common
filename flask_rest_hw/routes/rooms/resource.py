@@ -14,6 +14,7 @@ class Room:
 rooms_list = list()
 rooms_list.append(Room(21, "Lux", "Not available", 200))
 rooms_list.append(Room(32, "Standard", "Available", 100))
+rooms_list.append(Room(33, "Standard", "Available", 100))
 
 room_structure = {
     "number": fields.Integer,

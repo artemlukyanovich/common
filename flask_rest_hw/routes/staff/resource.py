@@ -39,8 +39,23 @@ class Staff(Resource):
             return "There is no such employee!"
         return show(staff_list)
 
+    # def post(self):
+    #     return "Sorry, you can't add employee!"
+
     def post(self):
-        return "Sorry, you can't add employee!"
+        data = json.loads(request.data)
+        try:
+            name = str(data.get('name'))
+            passport_id = int(data.get('passport_id'))
+            position = str(data.get('position'))
+            salary = int(data.get('salary'))
+        except ValueError:
+            return "Please enter the correct data!"
+        for empl in staff_list:
+            if empl.passport_id == passport_id:
+                return "Oops! Such employee already exists!"
+            staff_list.append(Employee(name, passport_id, position, salary))
+        return "Successfully added!"
 
     def patch(self, value=None):
         data = json.loads(request.data)
