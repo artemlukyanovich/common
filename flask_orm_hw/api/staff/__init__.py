@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask_restful import Api
-from api.staff.resource import Staff
+from api.staff.resource import StaffRes
 
 api_bp = Blueprint('staff', __name__)
 api = Api(api_bp)
 
-api.add_resource(Staff, '/staff', '/staff/<value>')
+api.add_resource(StaffRes, '/staff', '/staff/<value>')
 
