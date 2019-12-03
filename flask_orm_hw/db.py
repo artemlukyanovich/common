@@ -36,9 +36,16 @@ class Tenants(db.Model):
     sex = db.Column(db.String)
     city = db.Column(db.String)
     street = db.Column(db.String)
-    rooms = db.relationship('Rooms', backref='tenant')
+    rooms = db.relationship('Rooms', backref='tenants')
 
 
 employee_1 = Staff(passport_id=12345678, name='Ivan', position='manager', salary=400)
 employee_2 = Staff(passport_id=87654321, name='John', position='cleaner', salary=100)
+
+room_1 = Rooms(number=11, level='Lux', status='Available', price=200)
+room_2 = Rooms(number=12, level='Standard', status='Not available', price=100)
+room_3 = Rooms(number=13, level='Standard', status='Available', price=100)
+
+tenant_1 = Tenants(passport_id=11223344, name='Anna', age=30, sex='woman', city='Lviv', street='Rustavely')
+tenant_2 = Tenants(passport_id=22334455, name='Boris', age=58, sex='man', city='Kharkiv', street='Svobody')
 

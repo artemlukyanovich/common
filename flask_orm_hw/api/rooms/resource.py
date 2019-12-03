@@ -1,20 +1,7 @@
 import json
 from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
-
-
-class Room:
-    def __init__(self, number: int, level: str, status: str, price: int):
-        self.number = number
-        self.level = level
-        self.status = status
-        self.price = price
-
-
-rooms_list = list()
-rooms_list.append(Room(21, "Lux", "Not available", 200))
-rooms_list.append(Room(32, "Standard", "Not available", 100))
-rooms_list.append(Room(33, "Standard", "Available", 100))
+from db import Rooms, db
 
 room_structure = {
     "number": fields.Integer,
@@ -23,13 +10,18 @@ room_structure = {
     "price": fields.Integer
 }
 
+# rooms_list = list()
+# rooms_list.append(Room(21, "Lux", "Not available", 200))
+# rooms_list.append(Room(32, "Standard", "Not available", 100))
+# rooms_list.append(Room(33, "Standard", "Available", 100))
+
 status_list = ["Available", "Not available"]
 
 parser = reqparse.RequestParser()
 parser.add_argument("status", type=str, help="Please enter the correct status!")
 
 
-class Rooms(Resource):
+class RoomsRes(Resource):
     def get(self, value=None):
         @marshal_with(room_structure)  # show() function to make messages correct
         def show(x):
@@ -37,21 +29,18 @@ class Rooms(Resource):
         args = parser.parse_args()
         if args['status']:
             status = args['status'].replace("_", " ")
-            result = list()
-            for room in rooms_list:
-                if room.status == status:
-                    result.append(room)
+            result = Rooms.query.filter_by(status=status)
             return show(result)
         if value:
             try:
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            for room in rooms_list:
-                if room.number == value:
-                    return show(room)
-            return "Oops! There is no such room!"
-        return show(rooms_list)
+            result = Rooms.query.filter_by(number=value)
+            if not result.count():
+                return "Oops! There is no such room!"
+            return show(result.all())
+        return show(Rooms.query.all())
 
     def post(self):
         data = json.loads(request.data)
@@ -64,10 +53,11 @@ class Rooms(Resource):
             return "Please enter the correct data!"
         if status not in status_list:
             return "Is it Available or Not available?"
-        for room in rooms_list:
-            if room.number == number:
-                return "Oops! Such room already exists!"
-        rooms_list.append(Room(number, level, status, price))
+        if Rooms.query.filter_by(number=number).count():
+            return "Oops! Such room already exists!"
+        room = Rooms(**data)
+        db.session.add(room)
+        db.session.commit()
         return "Successfully added!"
 
     def patch(self, value=None):
@@ -84,12 +74,16 @@ class Rooms(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            for room in rooms_list:
-                if room.number == value:
-                    rooms_list.remove(room)
-                    rooms_list.append(Room(number, level, status, price))
-                    return "Successfully updated!"
-            return "Oops! There is no such room!"
+            room_prev = Rooms.query.filter_by(number=value)
+            if not room_prev.count():
+                return "Oops! There is no such room!"
+            if Rooms.query.filter_by(number=number).count():
+                return "Oops! This Number is not available!"
+            db.session.delete(room_prev.first())
+            room_new = Rooms(**data)
+            db.session.add(room_new)
+            db.session.commit()
+            return "Successfully updated!"
         return "Please choose the room!"
 
     def delete(self, value=None):
@@ -98,10 +92,11 @@ class Rooms(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            for room in rooms_list:
-                if room.number == value:
-                    rooms_list.remove(room)
-                    return "Successfully removed!"
+            room = Rooms.query.filter_by(number=value)
+            if room.count():
+                db.session.delete(room.first())
+                db.session.commit()
+                return "Successfully removed!"
             return "Oops! There is no such room!"
         return "Please choose the room!"
 
