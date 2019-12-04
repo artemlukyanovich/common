@@ -1,7 +1,7 @@
 import json
 from flask import request
 from flask_restful import Resource, fields, marshal_with
-from db import Staff, db
+from db import Staff, db, Rooms, staff_rooms
 
 staff_structure = {
     "passport_id": fields.Integer,
@@ -27,8 +27,30 @@ class StaffRes(Resource):
             return show(result.all())
         return show(Staff.query.all())
 
-    def post(self):
+    def post(self, value=None):
         data = json.loads(request.data)
+
+        if value:
+            try:
+                value = int(value)
+            except ValueError:
+                return "Please enter the correct data!"
+            empl = Staff.query.filter_by(passport_id=value)
+            if not empl.count():
+                return "Oops! There is no such employee!"
+            try:
+                room_num = int(data.get('room_number'))
+            except ValueError:
+                return "Just enter the correct room_number!"
+            room = Rooms.query.filter_by(number=room_num)
+            if not room.count():
+                return "Oops! There is no such room!"
+            empl = empl.first()
+            room = room.first()
+            empl.rooms.append(room)
+            db.session.commit()
+            return "Successfully added!"
+
         try:
             name = str(data.get('name'))    # too long :(
             passport_id = int(data.get('passport_id'))
@@ -69,18 +91,36 @@ class StaffRes(Resource):
             return "Successfully updated!"
         return "Please choose the employee!"
 
-    def delete(self, value=None):
+    def delete(self, value=None, value2=None):
+        if value and value2:
+            try:
+                value = int(value)
+                value2 = int(value2)
+            except ValueError:
+                return "Please enter the correct data!"
+            empl = Staff.query.filter_by(passport_id=value)
+            if not empl.count():
+                return "Oops! There is no such employee!"
+            room = Rooms.query.filter_by(number=value2)
+            if not room.count():
+                return "Oops! There is no such room!"
+            empl = empl.first()
+            room = room.first()
+            empl.rooms.remove(room)
+            db.session.commit()
+            return "Successfully removed!"
+
         if value:
             try:
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
             empl = Staff.query.filter_by(passport_id=value)
-            if empl.count():
-                db.session.delete(empl.first())
-                db.session.commit()
-                return "Successfully removed!"
-            return "Oops! There is no such employee!"
+            if not empl.count():
+                return "Oops! There is no such employee!"
+            db.session.delete(empl.first())
+            db.session.commit()
+            return "Successfully removed!"
         return "Please choose the employee!"
 
 

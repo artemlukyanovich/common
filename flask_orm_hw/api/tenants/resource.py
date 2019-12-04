@@ -3,24 +3,27 @@ from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
 from db import db, Tenants, Rooms
 
-# tenants_list = list()
-# tenants_list.append(Tenant("Anna", 22224444, 30, "woman", "Lviv", "Rustavely", 32))
-# tenants_list.append(Tenant("Boris", 33336666, 58, "man", "Kharkiv", "Svobody", 21))
-
 # address_structure = {
 #     "city": fields.String,
 #     "street": fields.String
 # }
+
+rooms_structure = {
+    "number": fields.Integer,
+    "price": fields.Integer
+}
 
 tenants_structure = {
     "passport_id": fields.Integer,
     "name": fields.String,
     "age": fields.Integer,
     "sex": fields.String,
-    # "address": fields.Nested(address_structure),
     "city": fields.String,
-    "street": fields.String
-    # "room_number": fields.Integer
+    "street": fields.String,
+    "rooms": fields.Nested(rooms_structure),
+    # "rooms": {
+    #     "number": fields.Integer
+    # }
 }
 
 sex_list = ['man', 'woman']
@@ -91,6 +94,7 @@ class TenantsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
+
             # for ten in tenants_list:
             #     if ten.passport_id == value:
             #         pr_room = ten.room_number
@@ -102,6 +106,7 @@ class TenantsRes(Resource):
             #         for room in rooms_list:
             #             if room.number == room_number:
             #                 room.status = "Not available"
+
             ten_prev = Tenants.query.filter_by(passport_id=value)
             if not ten_prev.count():
                 return "Oops! There is no such tenant!"
@@ -136,5 +141,4 @@ class TenantsRes(Resource):
                 return "Successfully removed!"
             return "Oops! There is no such tenant!"
         return "Please choose the tenant!"
-
 

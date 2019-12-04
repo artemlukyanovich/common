@@ -7,7 +7,8 @@ room_structure = {
     "number": fields.Integer,
     "level": fields.String(default="Standard"),
     "status": fields.String(default="Available"),
-    "price": fields.Integer
+    "price": fields.Integer,
+    "tenant_id": fields.Integer(default="No tenants")
 }
 
 # rooms_list = list()
@@ -26,6 +27,7 @@ class RoomsRes(Resource):
         @marshal_with(room_structure)  # show() function to make messages correct
         def show(x):
             return x
+
         args = parser.parse_args()
         if args['status']:
             status = args['status'].replace("_", " ")
@@ -44,17 +46,19 @@ class RoomsRes(Resource):
 
     def post(self):
         data = json.loads(request.data)
-        try:
-            number = int(data.get('number'))
-            level = str(data.get('level'))
-            status = str(data.get('status'))
-            price = int(data.get('price'))
-        except ValueError:
-            return "Please enter the correct data!"
-        if status not in status_list:
-            return "Is it Available or Not available?"
+        number = data.get('number')
+        level = data.get('level')
+        status = data.get('status')
+        price = data.get('price')
+        tenant_id = data.get('tenant_id')
         if Rooms.query.filter_by(number=number).count():
             return "Oops! Such room already exists!"
+        if status not in status_list and status is not None:
+            return "Is it Available or Not available?"
+        if price is None:
+            return 'Please enter the correct price!'
+        elif not type(price) == int and not price.isdigit():
+            return 'Please enter the correct price!'
         room = Rooms(**data)
         db.session.add(room)
         db.session.commit()
@@ -99,6 +103,3 @@ class RoomsRes(Resource):
                 return "Successfully removed!"
             return "Oops! There is no such room!"
         return "Please choose the room!"
-
-
-
