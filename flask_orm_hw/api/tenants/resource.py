@@ -9,6 +9,7 @@ rooms_structure = {
     "price": fields.Integer
 }
 
+"""Separate structure to make it easier in hw to copy-past and post a new record"""
 tenants_structure1 = {
     "passport_id": fields.Integer,
     "name": fields.String,
@@ -38,7 +39,7 @@ class TenantsRes(Resource):
             return x
 
         @marshal_with(tenants_structure2)
-        def show2(x):
+        def show2(x):   # show2() to see the tenant's rooms
             return x
         if value:
             try:
@@ -67,22 +68,9 @@ class TenantsRes(Resource):
             return "Oops! Such tenant already exists!"
         if sex not in sex_list:
             return "Is it man or woman?"
-
-        # for ten in tenants_list:
-        #     if ten.room_number == room_number:
-        #         return "Oops! This room is already reserved!"
-        # for room in rooms_list:
-        #     if room.number == room_number:
-        #         break
-        # else:
-        #     return "Oops! There is no such room!"
-
         ten = Tenants(**data)
         db.session.add(ten)
         db.session.commit()
-        # for room in rooms_list:
-        #     if room.number == room_number:
-        #         room.status = "Not available"
         return "Successfully added!"
 
     def patch(self, value=None):
@@ -94,7 +82,6 @@ class TenantsRes(Resource):
             sex = str(data.get('sex'))
             city = str(data.get('city'))
             street = str(data.get('street'))
-            # room_number = int(data.get('room_number'))
         except ValueError:
             return "Please enter the correct data!"
         if value:
@@ -102,29 +89,18 @@ class TenantsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-
-            # for ten in tenants_list:
-            #     if ten.passport_id == value:
-            #         pr_room = ten.room_number
-            #         tenants_list.remove(ten)
-            #         for room in rooms_list:
-            #             if room.number == pr_room:
-            #                 room.status = "Available"
-            #         tenants_list.append(Tenant(name, passport_id, age, sex, city, street, room_number))
-            #         for room in rooms_list:
-            #             if room.number == room_number:
-            #                 room.status = "Not available"
-
-            ten_prev = Tenants.query.get(value)
-            if not ten_prev:
+            tenant = Tenants.query.get(value)
+            if not tenant:
                 return "Oops! There is no such tenant!"
-            if Tenants.query.get(passport_id):
-                return "Oops! This ID is not available!"
+            if value != passport_id:
+                return "You can't change password ID!"
             if sex not in sex_list:
                 return "Is it man or woman?"
-            db.session.delete(ten_prev)
-            ten_new = Tenants(**data)
-            db.session.add(ten_new)
+            tenant.name = name
+            tenant.age = age
+            tenant.sex = sex
+            tenant.city = city
+            tenant.street = street
             db.session.commit()
             return "Successfully updated!"
         return "Please choose the tenant!"
@@ -135,13 +111,6 @@ class TenantsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            # for ten in tenants_list:
-            #     if ten.passport_id == value:
-            #         pr_room = ten.room_number
-            #         tenants_list.remove(ten)
-            #         for room in rooms_list:
-            #             if room.number == pr_room:
-            #                 room.status = "Available"
             ten = Tenants.query.get(value)
             if ten:
                 db.session.delete(ten)

@@ -9,6 +9,7 @@ rooms_structure = {
     "price": fields.Integer
 }
 
+"""Separate structure to make it easier in hw to copy-past and post a new record"""
 staff_structure1 = {
     "passport_id": fields.Integer,
     "name": fields.String,
@@ -32,7 +33,7 @@ class StaffRes(Resource):
             return x
 
         @marshal_with(staff_structure2)
-        def show2(x):
+        def show2(x):   # show2() to see the employee's rooms
             return x
 
         if value:
@@ -49,7 +50,7 @@ class StaffRes(Resource):
     def post(self, value=None):
         data = json.loads(request.data)
 
-        if value:
+        if value:   # The room for the staff should be added here
             try:
                 value = int(value)
             except ValueError:
@@ -97,20 +98,20 @@ class StaffRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            empl_prev = Staff.query.get(value)
-            if not empl_prev:
+            empl = Staff.query.get(value)
+            if not empl:
                 return "Oops! There is no such employee!"
-            if Staff.query.get(passport_id):
-                return "Oops! This ID is not available!"
-            db.session.delete(empl_prev)
-            empl_new = Staff(**data)
-            db.session.add(empl_new)
+            if value != passport_id:
+                return "You can't change password ID!"
+            empl.name = name
+            empl.position = position
+            empl.salary = salary
             db.session.commit()
             return "Successfully updated!"
         return "Please choose the employee!"
 
     def delete(self, value=None, value2=None):
-        if value and value2:
+        if value and value2:    # The room for the staff should be removed here
             try:
                 value = int(value)
                 value2 = int(value2)

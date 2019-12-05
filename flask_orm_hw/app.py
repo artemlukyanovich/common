@@ -22,6 +22,7 @@ def create_app(env="DEFAULT"):
 
     with app.app_context():  # Error while trying to add without "context"
         db.create_all()
+        """Some default data"""
         db.session.add(employee_1)
         db.session.add(employee_2)
         db.session.add(room_1)
