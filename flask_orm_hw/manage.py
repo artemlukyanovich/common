@@ -7,7 +7,6 @@ manager = Manager(create_app)
 
 manager.add_command('db', MigrateCommand)
 
-# можно без db: python manage.py runserver
 
 if __name__ == "__main__":
     manager.run()

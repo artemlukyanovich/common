@@ -11,11 +11,6 @@ room_structure = {
     "tenant_id": fields.Integer(default="No tenants")
 }
 
-# rooms_list = list()
-# rooms_list.append(Room(21, "Lux", "Not available", 200))
-# rooms_list.append(Room(32, "Standard", "Not available", 100))
-# rooms_list.append(Room(33, "Standard", "Available", 100))
-
 status_list = ["Available", "Not available"]
 
 parser = reqparse.RequestParser()
@@ -38,10 +33,10 @@ class RoomsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            result = Rooms.query.filter_by(number=value)
-            if not result.count():
+            result = Rooms.query.get(value)
+            if not result:
                 return "Oops! There is no such room!"
-            return show(result.all())
+            return show(result)
         return show(Rooms.query.all())
 
     def post(self):
@@ -51,7 +46,11 @@ class RoomsRes(Resource):
         status = data.get('status')
         price = data.get('price')
         tenant_id = data.get('tenant_id')
-        if Rooms.query.filter_by(number=number).count():
+        if number is None:
+            return 'Please enter the correct number!'
+        elif not type(number) == int and not number.isdigit():
+            return 'Please enter the correct number!'
+        if Rooms.query.get(number):
             return "Oops! Such room already exists!"
         if status not in status_list and status is not None:
             return "Is it Available or Not available?"
@@ -78,12 +77,12 @@ class RoomsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            room_prev = Rooms.query.filter_by(number=value)
-            if not room_prev.count():
+            room_prev = Rooms.query.get(value)
+            if not room_prev:
                 return "Oops! There is no such room!"
-            if Rooms.query.filter_by(number=number).count():
+            if Rooms.query.get(number):
                 return "Oops! This Number is not available!"
-            db.session.delete(room_prev.first())
+            db.session.delete(room_prev)
             room_new = Rooms(**data)
             db.session.add(room_new)
             db.session.commit()
@@ -96,9 +95,9 @@ class RoomsRes(Resource):
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            room = Rooms.query.filter_by(number=value)
-            if room.count():
-                db.session.delete(room.first())
+            room = Rooms.query.get(value)
+            if room:
+                db.session.delete(room)
                 db.session.commit()
                 return "Successfully removed!"
             return "Oops! There is no such room!"

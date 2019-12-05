@@ -3,27 +3,29 @@ from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
 from db import db, Tenants, Rooms
 
-# address_structure = {
-#     "city": fields.String,
-#     "street": fields.String
-# }
-
 rooms_structure = {
     "number": fields.Integer,
+    "level": fields.String,
     "price": fields.Integer
 }
 
-tenants_structure = {
+tenants_structure1 = {
+    "passport_id": fields.Integer,
+    "name": fields.String,
+    "age": fields.Integer,
+    "sex": fields.String,
+    "city": fields.String,
+    "street": fields.String
+}
+
+tenants_structure2 = {
     "passport_id": fields.Integer,
     "name": fields.String,
     "age": fields.Integer,
     "sex": fields.String,
     "city": fields.String,
     "street": fields.String,
-    "rooms": fields.Nested(rooms_structure),
-    # "rooms": {
-    #     "number": fields.Integer
-    # }
+    "rooms": fields.Nested(rooms_structure)
 }
 
 sex_list = ['man', 'woman']
@@ -31,19 +33,23 @@ sex_list = ['man', 'woman']
 
 class TenantsRes(Resource):
     def get(self, value=None):
-        @marshal_with(tenants_structure)  # show() function to make messages correct
-        def show(x):
+        @marshal_with(tenants_structure1)  # show() function to make messages correct
+        def show1(x):
+            return x
+
+        @marshal_with(tenants_structure2)
+        def show2(x):
             return x
         if value:
             try:
                 value = int(value)
             except ValueError:
                 return "Please enter the correct data!"
-            result = Tenants.query.filter_by(passport_id=value)
-            if not result.count():
+            result = Tenants.query.get(value)
+            if not result:
                 return "Oops! There is no such tenant!"
-            return show(result.all())
-        return show(Tenants.query.all())
+            return show2(result)
+        return show1(Tenants.query.all())
 
     def post(self):
         data = json.loads(request.data)
@@ -57,10 +63,11 @@ class TenantsRes(Resource):
             # room_number = int(data.get('room_number'))
         except ValueError:
             return "Please enter the correct data!"
-        if Tenants.query.filter_by(passport_id=passport_id).count():
+        if Tenants.query.get(passport_id):
             return "Oops! Such tenant already exists!"
         if sex not in sex_list:
             return "Is it man or woman?"
+
         # for ten in tenants_list:
         #     if ten.room_number == room_number:
         #         return "Oops! This room is already reserved!"
@@ -69,6 +76,7 @@ class TenantsRes(Resource):
         #         break
         # else:
         #     return "Oops! There is no such room!"
+
         ten = Tenants(**data)
         db.session.add(ten)
         db.session.commit()
@@ -107,14 +115,14 @@ class TenantsRes(Resource):
             #             if room.number == room_number:
             #                 room.status = "Not available"
 
-            ten_prev = Tenants.query.filter_by(passport_id=value)
-            if not ten_prev.count():
+            ten_prev = Tenants.query.get(value)
+            if not ten_prev:
                 return "Oops! There is no such tenant!"
-            if Tenants.query.filter_by(passport_id=passport_id).count():
+            if Tenants.query.get(passport_id):
                 return "Oops! This ID is not available!"
             if sex not in sex_list:
                 return "Is it man or woman?"
-            db.session.delete(ten_prev.first())
+            db.session.delete(ten_prev)
             ten_new = Tenants(**data)
             db.session.add(ten_new)
             db.session.commit()
@@ -134,9 +142,9 @@ class TenantsRes(Resource):
             #         for room in rooms_list:
             #             if room.number == pr_room:
             #                 room.status = "Available"
-            ten = Tenants.query.filter_by(passport_id=value)
-            if ten.count():
-                db.session.delete(ten.first())
+            ten = Tenants.query.get(value)
+            if ten:
+                db.session.delete(ten)
                 db.session.commit()
                 return "Successfully removed!"
             return "Oops! There is no such tenant!"
